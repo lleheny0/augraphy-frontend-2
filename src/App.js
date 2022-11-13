@@ -73,17 +73,23 @@ export default function App() {
   };
 
   const onSubmit = (e) => {
-    e.preventDefault();
+    const formData = new FormData();
+    const state = { inkEffects, paperEffects, postEffects, image };
+
+    Object.keys(state).forEach((key) => formData.append(key, state[key]));
 
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ inkEffects, paperEffects, postEffects, image }),
+      body: formData,
     };
 
-    fetch("http://localhost:8000/crappify", requestOptions).then((response) =>
-      response.json()
-    );
+    fetch(
+      "augraphy-web-production.up.railway.app:8000/crappify",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
   };
 
   return (
